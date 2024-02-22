@@ -26,6 +26,13 @@ namespace TS4
         StepperBase::startRotate(v == 0 ? vMax : v, acc);
     }
 
+    void Stepper::rotateAsyncSpeed(int32_t v)
+    {
+        int32_t targetVelocity = (v > 0) ? std::min(v,vMax) : std::max(v, -vMax);
+        StepperBase::startRotate(targetVelocity, acc);
+    }
+
+
     void Stepper::moveAbsAsync(int32_t target, uint32_t v)
     {
         StepperBase::startMoveTo(target, 0, (v == 0 ? vMax : v), acc);

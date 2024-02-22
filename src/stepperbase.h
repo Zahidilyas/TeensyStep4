@@ -46,7 +46,7 @@ namespace TS4
 
         volatile int32_t s;
         volatile int32_t v;
-        volatile int64_t v_sqr;
+        volatile int64_t v_sqr = 0;
 
         inline void doStep();
 
@@ -159,7 +159,7 @@ namespace TS4
             v_abs = sqrtf(std::abs(v_sqr));
             //SerialUSB.printf("vabs % d\n",v_abs);
             stpTimer->updateFrequency(v_abs);
-            doStep();
+            doStep(); // set pin high
         } else
         {
             //SerialUSB.println("rotISR reached");

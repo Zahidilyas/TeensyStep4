@@ -31,6 +31,7 @@ namespace TS4
         void moveRel(int32_t delta, uint32_t v = 0);
 
         void rotateAsync(int32_t v = 0);
+        void rotateAsyncSpeed(int32_t v = 0);
         void stopAsync();
         void stop();
 

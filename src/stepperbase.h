@@ -35,6 +35,7 @@ namespace TS4
 
         volatile int32_t pos = 0;
         volatile int32_t target;
+        volatile bool target_changed = false;
 
         int32_t s_tgt;
         int32_t v_tgt, v_tgt_orig;
@@ -108,24 +109,24 @@ namespace TS4
             }
         }
 
-        if (s < accEnd) // accelerating
+        if (s < accEnd && !target_changed) // accelerating
         {
             v = signum(v_sqr) * sqrtf(std::abs(v_sqr));
             v_sqr += twoA;
             stpTimer->updateFrequency(std::abs(v));
             doStep();
-        } else if (s < decStart) // constant speed
+        } else if (s < decStart && !target_changed) // constant speed
         {
             v = std::min(sqrtf(v_sqr), sqrtf(v_tgt_sqr));
             stpTimer->updateFrequency(v);
             doStep();
-        } else if (s < s_tgt) // decelerating
+        } else if (s < s_tgt && !target_changed) // decelerating
         {
             v_sqr -= twoA;
             v = signum(v_sqr) * sqrtf(std::abs(v_sqr));
             stpTimer->updateFrequency(std::abs(v));
             doStep();
-        } else // target reached
+        } else // target reached or changed
         {
             stpTimer->stop();
             TimerFactory::returnTimer(stpTimer);
@@ -138,6 +139,7 @@ namespace TS4
                 cur = tmp;
             }
             isMoving = false;
+            target_changed = false;
         }
     }
 

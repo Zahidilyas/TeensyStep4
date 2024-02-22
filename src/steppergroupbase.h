@@ -16,6 +16,12 @@ namespace TS4
         {
             if (steppers.empty()) return;
 
+            for (auto stepper : steppers)
+            {
+                if (stepper->isMoving)
+                    stepper->target_changed = true;
+                    while(stepper->isMoving){delay(1);}
+            }
 
             auto deltaSorter = [](Stepper* a, Stepper* b) { return std::abs(a->target - a->pos) > std::abs(b->target - b->pos); };
 
